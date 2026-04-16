@@ -1,15 +1,20 @@
-# from rest_framework.request import Request
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-# from rest_framework.exceptions import NotFound
-from .models import *
-from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
+
+from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView,CreateAPIView
 from .serializers import *
+from rest_framework import permissions
+
+
+
+class RegisterView(CreateAPIView):
+    serializer_class = RegisterSerializer
+    permission_classes = [permissions.AllowAny]
+
 
 
 class CarPostGet(ListCreateAPIView):
     # queryset = Car.objects.all()
     serializer_class = CarSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return Car.objects.all()
@@ -23,6 +28,7 @@ class CarPostGet(ListCreateAPIView):
 class CarUpdateDelete(RetrieveUpdateDestroyAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
+    permission_classes = [permissions.IsAuthenticated]
     lookup_url_kwarg = 'car_id'
 
     def get_object(self):
@@ -34,10 +40,12 @@ class CarUpdateDelete(RetrieveUpdateDestroyAPIView):
 class CategoryListView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class=CategorySerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 class CategoryUpdateView(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 
